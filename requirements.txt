@@ -1,0 +1,16 @@
+# Core libraries
+pandas
+numpy==1.26.4
+scikit-learn
+xgboost
+matplotlib
+seaborn
+joblib
+openpyxl
+rdkit-pypi
+
+
+jupyter
+jupyterlab
+ipykernel
+notebook

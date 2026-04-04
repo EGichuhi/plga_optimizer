@@ -1,0 +1,6 @@
+#!/Users/eunice/Documents/2026/4B/459/PLGA/plga_venv/bin/python3
+import sys
+from fontTools.merge import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())
