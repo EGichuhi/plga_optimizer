@@ -7,7 +7,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}============================================================${NC}"
-echo -e "${GREEN}🔬 PLGA Drug Delivery Optimizer${NC}"
+echo -e "${GREEN} PLGA Drug Delivery Optimizer${NC}"
 echo -e "${BLUE}============================================================${NC}"
 
 # Check if setup needs to run

@@ -17,9 +17,9 @@ class PLGAOptimizer:
             model_path = f'{models_path}/{target}_model.pkl'
             if os.path.exists(model_path):
                 self.models[target] = joblib.load(model_path)
-                print(f"✓ Loaded {target} model")
+                print(f" Loaded {target} model")
             else:
-                print(f"✗ Model not found: {model_path}")
+                print(f" Model not found: {model_path}")
         
         # Load reference data
         self.df13 = pd.read_csv(f'{data_path}/df13_with_features.csv')
@@ -38,7 +38,7 @@ class PLGAOptimizer:
         # Keep only features that exist in df13
         self.feature_names = [f for f in self.numeric_features if f in self.df13.columns]
         
-        print(f"\n✓ Optimizer ready with {len(self.feature_names)} features")
+        print(f"\n Optimizer ready with {len(self.feature_names)} features")
     
     def get_drug_properties(self, drug_name):
         """Retrieve or estimate drug properties from numeric columns only"""
@@ -51,11 +51,11 @@ class PLGAOptimizer:
             for col in self.numeric_features:
                 if col in drug_data.columns:
                     props[col] = drug_data[col].mean()
-            print(f"✓ Found {drug_name} in database")
+            print(f" Found {drug_name} in database")
             return props
         else:
             # Use average values from dataset
-            print(f"⚠️ Drug '{drug_name}' not in database. Using average properties.")
+            print(f" Drug '{drug_name}' not in database. Using average properties.")
             props = {}
             for col in self.numeric_features:
                 if col in self.df13.columns:
@@ -66,7 +66,7 @@ class PLGAOptimizer:
         """Recommend optimal PLGA formulation for a drug"""
         
         print(f"\n{'='*70}")
-        print(f"🔬 OPTIMIZING PLGA FOR: {drug_name.upper()}")
+        print(f" OPTIMIZING PLGA FOR: {drug_name.upper()}")
         print('='*70)
         
         # Get drug properties
@@ -80,7 +80,7 @@ class PLGAOptimizer:
         }
         
         total_combos = len(search_space['polymer_MW']) * len(search_space['LA/GA']) * len(search_space['drug/polymer'])
-        print(f"\n🔍 Searching {total_combos} combinations...")
+        print(f"\n Searching {total_combos} combinations...")
         
         results = []
         
@@ -124,25 +124,25 @@ class PLGAOptimizer:
                 })
         
         if len(results) == 0:
-            print(f"\n⚠️ No formulations found with EE >= {min_ee}%")
+            print(f"\n No formulations found with EE >= {min_ee}%")
             return pd.DataFrame()
         
         # Sort and display
         results_df = pd.DataFrame(results).sort_values('score', ascending=False)
         
         print(f"\n{'='*70}")
-        print(f"🏆 TOP 5 RECOMMENDATIONS")
+        print(f" TOP 5 RECOMMENDATIONS")
         print('='*70)
         print(results_df.head(5).to_string(index=False))
         
         best = results_df.iloc[0]
         print(f"\n{'='*70}")
-        print(f"✅ RECOMMENDED FORMULATION")
+        print(f" RECOMMENDED FORMULATION")
         print('='*70)
         print(f"   Polymer MW:      {best['polymer_MW (Da)']:,} Da")
         print(f"   LA/GA ratio:     {best['LA/GA_ratio']}")
         print(f"   Drug loading:    {best['drug/polymer_ratio']}")
-        print(f"\n📈 Expected performance:")
+        print(f"\n Expected performance:")
         print(f"   • Particle size: {best['pred_size_nm']} nm")
         print(f"   • Encapsulation: {best['pred_EE_%']}%")
         print(f"   • Loading capacity: {best['pred_LC_%']}%")

@@ -24,7 +24,7 @@ def check_and_prepare_data(loader):
         return loader.load_df13_with_features()
     
     # If not, build from scratch
-    print("📦 Preparing data for first time use...")
+    print(" Preparing data for first time use...")
     
     # Step 1: Build df13 (D1 + D3 concat)
     try:
@@ -48,7 +48,7 @@ def check_and_prepare_data(loader):
 
 def main():
     print("="*60)
-    print("🔬 PLGA Formulation Optimization Pipeline")
+    print(" PLGA Formulation Optimization Pipeline")
     print("="*60)
     print("This will prepare your data, train models, and save everything.")
     print("="*60)
@@ -100,7 +100,7 @@ def main():
     df13.to_csv('data/processed/df13_with_features.csv', index=False)
     
     print("\n" + "="*60)
-    print("✅ ALL DONE!")
+    print("ALL DONE!")
     print("="*60)
     print("\nWhat was saved:")
     print("   • models/particle_size_model.pkl")

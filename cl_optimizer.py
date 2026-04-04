@@ -69,7 +69,7 @@ class PLGAOptimizer:
             print(f"   Properties: LogP={props['mol_logP']:.2f}, TPSA={props['mol_TPSA']:.1f} Å², MW={props['mol_MW']:.0f} Da")
             return props
         else:
-            print(f"⚠️ Drug '{drug_name}' not found in database.")
+            print(f" Drug '{drug_name}' not found in database.")
             print(f"   Using average properties from {len(self.df13)} formulations.")
             return {
                 'mol_MW': self.df13['mol_MW'].mean(),
@@ -138,14 +138,14 @@ class PLGAOptimizer:
         # Append the dataframe
         results_df.to_csv(filepath, mode='a', index=False)
         
-        print(f"\n💾 Results saved to: {filepath}")
+        print(f"\n Results saved to: {filepath}")
         return filepath
     
     def recommend(self, drug_name, min_ee=30, max_size=500, priority='balanced', show_top=10, auto_save=True):
         """Recommend optimal PLGA formulation"""
         
         print(f"\n{'='*60}")
-        print(f"🔬 Optimizing PLGA for: {drug_name.upper()}")
+        print(f" Optimizing PLGA for: {drug_name.upper()}")
         print(f"{'='*60}")
         
         # Get drug properties
@@ -161,7 +161,7 @@ class PLGAOptimizer:
         }
         
         total = len(search_space['polymer_MW']) * len(search_space['LA/GA']) * len(search_space['drug/polymer'])
-        print(f"📊 Searching {total} formulations...")
+        print(f" Searching {total} formulations...")
         print(f"   Constraints: EE ≥ {min_ee}%, Size ≤ {max_size} nm")
         print(f"   Priority: {priority.upper()}")
         
@@ -212,14 +212,14 @@ class PLGAOptimizer:
         
         # Display results
         print(f"\n{'='*60}")
-        print(f"🏆 TOP {min(show_top, len(results_df))} RECOMMENDATIONS")
+        print(f" TOP {min(show_top, len(results_df))} RECOMMENDATIONS")
         print(f"{'='*60}")
         print(results_df.head(show_top).to_string(index=False))
         
         # Best formulation
         best = results_df.iloc[0]
         print(f"\n{'='*60}")
-        print(f"✅ RECOMMENDED FORMULATION")
+        print(f"RECOMMENDED FORMULATION")
         print(f"{'='*60}")
         print(f"   Polymer MW:      {best['polymer_MW (Da)']:,} Da")
         print(f"   LA/GA ratio:     {best['LA/GA ratio']}")
@@ -232,11 +232,11 @@ class PLGAOptimizer:
         # Interpretation
         la_ga = best['LA/GA ratio']
         if la_ga < 1:
-            print(f"\n   💡 LA/GA={la_ga} → Fast degrading (weeks), good for short-term release")
+            print(f"\n    LA/GA={la_ga} → Fast degrading (weeks), good for short-term release")
         elif la_ga < 2:
-            print(f"\n   💡 LA/GA={la_ga} → Medium degradation (months), balanced release")
+            print(f"\n    LA/GA={la_ga} → Medium degradation (months), balanced release")
         else:
-            print(f"\n   💡 LA/GA={la_ga} → Slow degrading (months-years), ideal for long-term release")
+            print(f"\n    LA/GA={la_ga} → Slow degrading (months-years), ideal for long-term release")
         
         # Auto-save results
         if auto_save:
@@ -249,7 +249,7 @@ def list_available_drugs():
     """Show all drugs in the database"""
     df13 = pd.read_csv('data/processed/df13_with_features.csv')
     drugs = sorted(df13['small_molecule_name'].unique())
-    print("\n📋 Available drugs in database:")
+    print("\n Available drugs in database:")
     
     # Display in columns for better readability
     col_width = 25
@@ -263,7 +263,7 @@ def list_available_drugs():
 
 def print_banner():
     print("="*70)
-    print("🔬 PLGA DRUG DELIVERY OPTIMIZER")
+    print(" PLGA DRUG DELIVERY OPTIMIZER")
     print("="*70)
     print("Random Forest Model | Optimize polymer characteristics")
     print("="*70)
@@ -271,7 +271,7 @@ def print_banner():
 
 def get_user_preferences():
     """Get optimization preferences from user"""
-    print("\n📊 Optimization Priority:")
+    print("\n Optimization Priority:")
     print("   1. Balanced (default) - Good size, EE, and LC")
     print("   2. Minimize particle size - For targeted delivery")
     print("   3. Maximize encapsulation - For drug loading efficiency")
@@ -293,19 +293,19 @@ def main():
     print_banner()
     
     # Initialize optimizer
-    print("\n🔄 Loading Random Forest models...")
+    print("\n Loading Random Forest models...")
     try:
         optimizer = PLGAOptimizer()
     except FileNotFoundError:
-        print("\n❌ Models not found! Please run 'python main.py' first to train models.")
+        print("\n Models not found! Please run 'python main.py' first to train models.")
         return
     
     while True:
         print("\n" + "="*70)
-        drug_name = input("💊 Enter drug name (or 'list' to see available, 'quit' to exit): ").strip()
+        drug_name = input(" Enter drug name (or 'list' to see available, 'quit' to exit): ").strip()
         
         if drug_name.lower() in ['quit', 'exit', 'q']:
-            print("\n👋 Goodbye!")
+            print("\n Goodbye!")
             break
         
         if drug_name.lower() == 'list':
@@ -313,14 +313,14 @@ def main():
             continue
         
         if not drug_name:
-            print("⚠️ Please enter a drug name")
+            print(" Please enter a drug name")
             continue
         
         # Get preferences
         priority = get_user_preferences()
         
         # Get constraints
-        print("\n⚙️ Constraints (press Enter for defaults):")
+        print("\n Constraints (press Enter for defaults):")
         min_ee_input = input("  Minimum EE (%) [default: 30]: ").strip()
         min_ee = float(min_ee_input) if min_ee_input else 30
         
