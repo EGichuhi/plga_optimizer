@@ -2,25 +2,25 @@
 # setup.sh
 
 echo "============================================================"
-echo "🔬 PLGA Drug Delivery Optimizer - Setup"
+echo "PLGA Drug Delivery Optimizer - Setup"
 echo "============================================================"
 
 # Install RDKit
 echo ""
-echo "📦 Installing RDKit..."
+echo "Installing RDKit..."
 conda install -c conda-forge rdkit -y
 
 # Install everything else from requirements.txt
 echo ""
-echo "📦 Installing Python packages..."
+echo "Installing Python packages..."
 pip install -r requirements.txt
 
 # Train models
 echo ""
-echo "🚀 Training models..."
+echo "Training models..."
 python main.py
 
 echo ""
-echo "Setup complete!"
+echo " Setup complete!"
 echo ""
 echo "Run: python cl_optimizer.py"
