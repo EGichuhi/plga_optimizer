@@ -21,6 +21,6 @@ echo "🚀 Training models..."
 python main.py
 
 echo ""
-echo "✅ Setup complete!"
+echo "Setup complete!"
 echo ""
 echo "Run: python cl_optimizer.py"
