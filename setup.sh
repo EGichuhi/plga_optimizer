@@ -1,19 +1,20 @@
 #!/bin/bash
-# setup.sh
+# setup.sh - Runs automatically in Codespaces
 
 echo "============================================================"
-echo "PLGA Drug Delivery Optimizer - Setup"
+echo " PLGA Drug Delivery Optimizer - Setup"
 echo "============================================================"
 
-# Install RDKit
+# Install RDKit via conda (works in Codespaces)
 echo ""
-echo "Installing RDKit..."
+echo "Installing RDKit via conda..."
 conda install -c conda-forge rdkit -y
 
-# Install everything else from requirements.txt
+# Install other dependencies via pip (requirements.txt should NOT have rdkit-pypi)
 echo ""
 echo "Installing Python packages..."
-pip install -r requirements.txt
+pip install --quiet --upgrade pip
+pip install --quiet -r requirements.txt
 
 # Train models
 echo ""
@@ -21,6 +22,6 @@ echo "Training models..."
 python main.py
 
 echo ""
-echo " Setup complete!"
+echo "Setup complete!"
 echo ""
 echo "Run: python cl_optimizer.py"
