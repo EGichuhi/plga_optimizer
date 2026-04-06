@@ -1,127 +1,171 @@
-# src/feature_engineering.py
-
 import pandas as pd
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdFingerprintGenerator
 from rdkit import RDLogger
 from sklearn.impute import SimpleImputer
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import ColumnTransformer
 
-# Suppress RDKit warnings
 RDLogger.DisableLog('rdApp.warning')
 
-# Configuration for features
-
-
-POLYMER_FEATURES = ['polymer_MW', 'LA/GA']
-DRUG_FEATURES = ['mol_MW', 'mol_logP', 'mol_TPSA', 'mol_melting_point', 
-                 'mol_Hacceptors', 'mol_Hdonors', 'mol_heteroatoms']
+POLYMER_FEATURES    = ['polymer_MW', 'LA/GA']
+DRUG_FEATURES       = ['mol_MW', 'mol_logP', 'mol_TPSA', 'mol_melting_point',
+                        'mol_Hacceptors', 'mol_Hdonors', 'mol_heteroatoms']
 FORMULATION_FEATURES = ['drug/polymer', 'surfactant_concentration', 'surfactant_HLB']
-PROCESS_FEATURES = ['aqueous/organic', 'pH', 'solvent_polarity_index']
-ENGINEERED_FEATURES = ['LA_mol_fraction', 'log_polymer_MW', 'polymer_MW_kDa', 
-                       'drug_logP_normalized', 'polymer_drug_affinity', 'la_ga_drug_logP']
+PROCESS_FEATURES    = ['aqueous/organic', 'pH', 'solvent_polarity_index']
+ENGINEERED_FEATURES = ['LA_mol_fraction', 'log_polymer_MW', 'polymer_MW_kDa',
+                        'polymer_drug_MW_ratio', 'la_ga_drug_logP']
 
-ALL_SCALAR_FEATURES = POLYMER_FEATURES + DRUG_FEATURES + FORMULATION_FEATURES + PROCESS_FEATURES + ENGINEERED_FEATURES
+ALL_SCALAR_FEATURES = (POLYMER_FEATURES + DRUG_FEATURES + FORMULATION_FEATURES
+                       + PROCESS_FEATURES + ENGINEERED_FEATURES)
+
 
 # SMILES 
 
 def add_smiles_from_lookup(df13, df2, df4=None):
-    """
-    Add canonical SMILES to df13 by looking up from df2.
-    df4 is optional - only used if df2 doesn't have the SMILES.
-    """
-    smiles_lookup = {}
-    
+    lookup = {}
     for _, row in df2.iterrows():
         if pd.notna(row.get('small_molecule_name')) and pd.notna(row.get('canonical_SMILES')):
-            smiles_lookup[row['small_molecule_name']] = row['canonical_SMILES']
-    
-    # Only use df4 if provided and SMILES missing in df2
+            lookup[row['small_molecule_name']] = row['canonical_SMILES']
+
     if df4 is not None and 'canonical_SMILES' in df4.columns:
         for _, row in df4.iterrows():
-            name = row.get('small_molecule_name')
-            smiles = row.get('canonical_SMILES')
-            if pd.notna(name) and pd.notna(smiles) and name not in smiles_lookup:
-                smiles_lookup[name] = smiles
-    
-    df13_with_smiles = df13.copy()
-    df13_with_smiles['canonical_SMILES'] = df13_with_smiles['small_molecule_name'].map(smiles_lookup)
-    
-    matched = df13_with_smiles['canonical_SMILES'].notna().sum()
-    print(f"Added SMILES to {matched}/{len(df13_with_smiles)} rows ({matched/len(df13_with_smiles)*100:.1f}%)")
-    
-    return df13_with_smiles
+            name, smiles = row.get('small_molecule_name'), row.get('canonical_SMILES')
+            if pd.notna(name) and pd.notna(smiles) and name not in lookup:
+                lookup[name] = smiles
 
-# Fingerprint generation using RDKit's Morgan fingerprints 
+    out = df13.copy()
+    out['canonical_SMILES'] = out['small_molecule_name'].map(lookup)
+    matched = out['canonical_SMILES'].notna().sum()
+    print(f"SMILES matched: {matched}/{len(out)} ({matched/len(out)*100:.1f}%)")
+    return out
+
+
+# Morgan fingerprints 
 
 def _safe_get_fingerprint(smiles, radius=2, nBits=2048):
-    """Internal function - generates fingerprint for a single SMILES"""
     if pd.isna(smiles):
         return None
-    
     try:
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             return None
         Chem.SanitizeMol(mol)
-        mfp_gen = rdFingerprintGenerator.GetMorganGenerator(radius=radius, fpSize=nBits)
-        fp = mfp_gen.GetFingerprint(mol)
-        return list(fp)
+        return list(rdFingerprintGenerator.GetMorganGenerator(radius=radius, fpSize=nBits).GetFingerprint(mol))
     except Exception:
+        print(f"  WARNING: fingerprint failed for '{smiles}'")
         return None
 
-def generate_morgan_fingerprints(df, smiles_col='canonical_SMILES', radius=2, nBits=2048):
-    """Generate Morgan fingerprints for all rows"""
-    df_with_fp = df.copy()
-    df_with_fp['morgan_fingerprint'] = df_with_fp[smiles_col].apply(
-        lambda x: _safe_get_fingerprint(x, radius, nBits)
-    )
-    
-    valid_count = df_with_fp['morgan_fingerprint'].notna().sum()
-    print(f"Generated fingerprints for {valid_count}/{len(df_with_fp)} molecules")
-    
-    if valid_count > 0:
-        sample_fp = df_with_fp['morgan_fingerprint'].dropna().iloc[0]
-        print(f"  Length: {len(sample_fp)} bits")
-        print(f"  Density: {np.mean(sample_fp):.3f}")
-    
-    return df_with_fp
 
-# Feature engineering
+def generate_morgan_fingerprints(df, smiles_col='canonical_SMILES', radius=2, nBits=2048):
+    out = df.copy()
+    out['morgan_fingerprint'] = out[smiles_col].apply(lambda x: _safe_get_fingerprint(x, radius, nBits))
+    valid = out['morgan_fingerprint'].notna().sum()
+    if valid:
+        sample = out['morgan_fingerprint'].dropna().iloc[0]
+    return out
+
+
+def filter_valid_fingerprints(df, fp_col='morgan_fingerprint'):
+    out = df[df[fp_col].notna()].copy().reset_index(drop=True)
+    dropped = len(df) - len(out)
+    if dropped:
+        print(f"Dropped {dropped} rows with missing fingerprints.")
+    return out
+
+
+# Feature engineering 
 
 def create_engineered_features(df):
-    """Create engineered features for PLGA optimization"""
-    df_eng = df.copy()
-    
-    # Polymer-derived
-    df_eng['LA_mol_fraction'] = df_eng['LA/GA'] / (1 + df_eng['LA/GA'])
-    df_eng['log_polymer_MW'] = np.log10(df_eng['polymer_MW'])
-    df_eng['polymer_MW_kDa'] = df_eng['polymer_MW'] / 1000
-    
-    # Drug-derived (normalized)
-    df_eng['drug_logP_normalized'] = (
-        (df_eng['mol_logP'] - df_eng['mol_logP'].mean()) / 
-        df_eng['mol_logP'].std()
+    out = df.copy()
+    out['LA_mol_fraction']      = out['LA/GA'] / (1 + out['LA/GA'])
+    out['log_polymer_MW']       = np.log10(out['polymer_MW'])
+    out['polymer_MW_kDa']       = out['polymer_MW'] / 1000
+    out['polymer_drug_MW_ratio'] = out['polymer_MW'] / out['mol_MW'].replace(0, np.nan)
+    out['la_ga_drug_logP']      = out['LA_mol_fraction'] * out['mol_logP']
+    return out
+
+
+# Feature matrix 
+
+def build_full_feature_matrix(df, scalar_features=ALL_SCALAR_FEATURES, fp_col='morgan_fingerprint'):
+    fp_matrix     = np.array(df[fp_col].tolist(), dtype=np.float32)
+    scalar_matrix = df[scalar_features].values.astype(np.float64)
+    X             = np.hstack([scalar_matrix, fp_matrix])
+    feature_names = list(scalar_features) + [f'fp_bit_{i}' for i in range(fp_matrix.shape[1])]
+    return X, df.index, feature_names
+
+
+# sklearn transformers 
+
+class ScalarImputer(BaseEstimator, TransformerMixin):
+    def __init__(self, n_scalar_features):
+        self.n_scalar_features = n_scalar_features
+
+    def fit(self, X, y=None):
+        self._imputer = SimpleImputer(strategy='median')
+        self._imputer.fit(X[:, :self.n_scalar_features])
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        X[:, :self.n_scalar_features] = self._imputer.transform(X[:, :self.n_scalar_features])
+        return X
+
+
+class ScalarScaler(BaseEstimator, TransformerMixin):
+    def __init__(self, n_scalar_features):
+        self.n_scalar_features = n_scalar_features
+
+    def fit(self, X, y=None):
+        self._scaler = StandardScaler()
+        self._scaler.fit(X[:, :self.n_scalar_features])
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        X[:, :self.n_scalar_features] = self._scaler.transform(X[:, :self.n_scalar_features])
+        return X
+
+
+class FingerprintVarianceFilter(BaseEstimator, TransformerMixin):
+    def __init__(self, n_scalar_features, threshold=0.01):
+        self.n_scalar_features = n_scalar_features
+        self.threshold         = threshold
+
+    def fit(self, X, y=None):
+        self._vt = VarianceThreshold(threshold=self.threshold)
+        self._vt.fit(X[:, self.n_scalar_features:])
+        print(f"VarianceThreshold: {self._vt.get_support().sum()}/{X.shape[1] - self.n_scalar_features} fp bits kept")
+        return self
+
+    def transform(self, X):
+        return np.hstack([X[:, :self.n_scalar_features],
+                          self._vt.transform(X[:, self.n_scalar_features:])])
+
+
+# Pipeline 
+
+def build_preprocessing_pipeline(n_scalar_features: int, fp_variance_threshold: float = 0.1):
+    return ColumnTransformer(
+        transformers=[
+            ('scalar',      Pipeline([('imputer', SimpleImputer(strategy='median')),
+                                       ('scaler',  StandardScaler())]),
+                            slice(0, n_scalar_features)),
+            ('fingerprint', VarianceThreshold(threshold=fp_variance_threshold),
+                            slice(n_scalar_features, None))
+        ],
+        remainder='passthrough',
+        verbose_feature_names_out=False
     )
-    
-    # Interaction features
-    df_eng['polymer_drug_affinity'] = df_eng['log_polymer_MW'] * df_eng['drug_logP_normalized']
-    df_eng['la_ga_drug_logP'] = df_eng['LA_mol_fraction'] * df_eng['drug_logP_normalized']
-    
-    print(f"Created {len(ENGINEERED_FEATURES)} engineered features")
-    return df_eng
 
-# Feature matrix preparation
+def run_feature_engineering(df):
+    df = generate_morgan_fingerprints(df, smiles_col='canonical_SMILES', radius=2, nBits=2048)
+    df = filter_valid_fingerprints(df, fp_col='morgan_fingerprint')
+    df = create_engineered_features(df)
+    return df
 
-def prepare_feature_matrix(df, feature_list):
-    """Extract and impute features"""
-    missing_counts = df[feature_list].isnull().sum()
-    
-    if missing_counts.sum() > 0:
-        print(f"Missing values found, imputing with median...")
-        imputer = SimpleImputer(strategy='median')
-        X = imputer.fit_transform(df[feature_list])
-        return X, imputer
-    else:
-        print("No missing values found")
-        return df[feature_list].values, None

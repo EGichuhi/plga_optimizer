@@ -1,0 +1,53 @@
+2026-04-06 08:44:07  INFO      Log file: logs/run_20260406_084407.log
+2026-04-06 08:44:07  INFO      ======================================================================
+2026-04-06 08:44:07  INFO      MLPIPELINE — PLGA FORMULATION PREDICTION
+2026-04-06 08:44:07  INFO      ======================================================================
+2026-04-06 08:44:07  INFO      Config: {'test_size': 0.2, 'random_state': 42, 'n_estimators': 200, 'fp_variance_threshold': 0.1, 'max_depth': None, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'cv_folds': 5}
+2026-04-06 08:44:07  INFO      Step 1: Loading data
+2026-04-06 08:44:07  INFO        Dataset shape: (433, 23)
+2026-04-06 08:44:07  INFO      Step 2: Feature engineering
+2026-04-06 08:44:08  INFO        Dataset shape after engineering: (433, 29)
+2026-04-06 08:44:08  INFO      Step 3: Train/test split
+2026-04-06 08:44:08  INFO        Targets: ['particle_size', 'EE', 'LC']
+2026-04-06 08:44:08  INFO      Step 4: Building feature matrices
+2026-04-06 08:44:08  INFO      Step 5: Preprocessing
+2026-04-06 08:44:08  INFO      Step 6: Training and evaluation
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      STEP 5: SAVING
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      Saved metadata → models/feature_metadata.pkl
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      FINAL SUMMARY
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      Samples  — train: 346  test: 87
+2026-04-06 08:44:10  INFO      Features after preprocessing: 96
+2026-04-06 08:44:10  INFO      Target statistics:
+2026-04-06 08:44:10  INFO        PARTICLE_SIZE
+2026-04-06 08:44:10  INFO          Train  mean=190.38  std=101.04
+2026-04-06 08:44:10  INFO          Test   mean=184.22  std=102.05
+2026-04-06 08:44:10  INFO        EE
+2026-04-06 08:44:10  INFO          Train  mean=64.78  std=23.92
+2026-04-06 08:44:10  INFO          Test   mean=64.15  std=22.37
+2026-04-06 08:44:10  INFO        LC
+2026-04-06 08:44:10  INFO          Train  mean=9.12  std=7.37
+2026-04-06 08:44:10  INFO          Test   mean=7.53  std=6.09
+2026-04-06 08:44:10  INFO      Model performance:
+2026-04-06 08:44:10  INFO        PARTICLE_SIZE
+2026-04-06 08:44:10  INFO          CV  R²  : 0.759 ± 0.058
+2026-04-06 08:44:10  INFO          CV  MAE : 27.38 ± 2.08
+2026-04-06 08:44:10  INFO          Test R² : 0.808
+2026-04-06 08:44:10  INFO          Test MAE: 28.26
+2026-04-06 08:44:10  INFO        EE
+2026-04-06 08:44:10  INFO          CV  R²  : 0.609 ± 0.083
+2026-04-06 08:44:10  INFO          CV  MAE : 9.74 ± 0.97
+2026-04-06 08:44:10  INFO          Test R² : 0.513
+2026-04-06 08:44:10  INFO          Test MAE: 10.37
+2026-04-06 08:44:10  INFO        LC
+2026-04-06 08:44:10  INFO          CV  R²  : 0.743 ± 0.094
+2026-04-06 08:44:10  INFO          CV  MAE : 2.13 ± 0.38
+2026-04-06 08:44:10  INFO          Test R² : 0.817
+2026-04-06 08:44:10  INFO          Test MAE: 1.77
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      PIPELINE RUN COMPLETE
+2026-04-06 08:44:10  INFO      ======================================================================
+2026-04-06 08:44:10  INFO      Run complete. Log saved to logs/run_20260406_084407.log

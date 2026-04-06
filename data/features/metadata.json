@@ -1,0 +1,9 @@
+{
+  "input_shape": 433,
+  "output_shape": [
+    433,
+    99
+  ],
+  "n_scalar_features": 20,
+  "n_fingerprint_bits": 79
+}

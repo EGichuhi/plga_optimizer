@@ -10,10 +10,12 @@ DATA_PATH = {
 MODEL_CONFIG = {
     'test_size': 0.2,
     'random_state': 42,
-    'n_estimators': 100,
+    'n_estimators': 200,
+    'fp_variance_threshold': 0.1,
     'max_depth': None,           
     'min_samples_split': 2,     
-    'min_samples_leaf': 1,      
+    'min_samples_leaf': 1, 
+    'max_features': 'sqrt',     
     'cv_folds': 5
 }
 
