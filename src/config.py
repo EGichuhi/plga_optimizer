@@ -1,5 +1,3 @@
-# src/config.py
-
 # Data paths
 DATA_PATH = {
     'df1': 'data/processed/dataset1.csv',

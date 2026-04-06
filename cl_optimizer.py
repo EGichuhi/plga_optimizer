@@ -1,5 +1,3 @@
-# cl_optimizer.py - Updated with results folder
-
 import sys
 sys.path.append('.')
 

@@ -1,14 +1,13 @@
 # Core libraries
 pandas
 numpy==1.26.4
+scipy
 scikit-learn
 matplotlib
 seaborn
 joblib
 openpyxl
 
-
-jupyter
 jupyterlab
 ipykernel
 notebook
