@@ -14,8 +14,7 @@ Just open the Codespace and run the optimizer.
 PLGA is a biodegradable polymer widely used in controlled drug delivery.  
 The optimizer helps you:
 
-- Predict drug release profiles based on PLGA composition  
-- Estimate degradation and diffusion behavior   
+- Predict best PLGA composition based on user requirements.  
 - Optimize formulation parameters  
 - Export results for analysis  
 
@@ -37,7 +36,7 @@ On the GitHub repo page:
 
 ## ▶️ Running the Optimizer (CLI)
 
-Give the code a few minutes first to set up everything.
+Give the code 2-3 minutes first to set up everything.
 
 Once the Codespace finishes setting up, open the terminal and run:
 
