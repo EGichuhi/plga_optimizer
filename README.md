@@ -33,24 +33,20 @@ On the GitHub repo page:
 2. Choose **“Open with Codespaces”**  
 3. Select **“New Codespace”**
 
-The environment will automatically:
-
-- Install Conda  
-- Create the `plga_venv` environment  
-- Install RDKit  
-- Install all Python dependencies  
-- Activate the environment for you  
-
-You don’t need to do anything else.
-
 ---
 
 ## ▶️ Running the Optimizer (CLI)
 
+Give the code a few minutes first to set up everything.
+
 Once the Codespace finishes setting up, open the terminal and run:
 
-**bash setup.sh**
-**python plga_optimizer.py**
+
+```bash
+bash setup.sh   # Install dependencies
+./run.sh        # Start the optimizer
+
+When the terminal displays a URL, open it in your browser.
 
 ---
 
