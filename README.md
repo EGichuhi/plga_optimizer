@@ -9,7 +9,7 @@ Just open the Codespace and run the optimizer.
 
 ---
 
-# 🌟 What This Tool Does
+## 🌟 What This Tool Does
 
 PLGA is a biodegradable polymer widely used in controlled drug delivery.  
 The optimizer helps you:
@@ -23,7 +23,7 @@ Everything is wrapped in a simple CLI so you don’t need to write code.
 
 ---
 
-# 🚀 Quick Start (No Installation Needed)
+## 🚀 Quick Start (No Installation Needed)
 
 ### **1. Open the project in GitHub Codespaces**
 
@@ -45,7 +45,7 @@ You don’t need to do anything else.
 
 ---
 
-# ▶️ Running the Optimizer (CLI)
+## ▶️ Running the Optimizer (CLI)
 
 Once the Codespace finishes setting up, open the terminal and run:
 
@@ -53,7 +53,7 @@ Once the Codespace finishes setting up, open the terminal and run:
 
 ---
 
-# 🎉 Final Notes
+## 🎉 Final Notes
 
 Thank you for exploring the PLGA Drug Delivery Optimizer!  
 Whether you're a researcher, student, or someone simply curious about controlled‑release systems, this tool is built to help you experiment, learn, and discover.
