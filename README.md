@@ -33,24 +33,21 @@ On the GitHub repo page:
 2. Choose **“Open with Codespaces”**  
 3. Select **“New Codespace”**
 
-The environment will automatically:
-
-- Install Conda  
-- Create the `plga_venv` environment  
-- Install RDKit  
-- Install all Python dependencies  
-- Activate the environment for you  
-
-You don’t need to do anything else.
-
 ---
 
 ## ▶️ Running the Optimizer (CLI)
 
+Give the code a few minutes first to set up everything.
+
 Once the Codespace finishes setting up, open the terminal and run:
 
-**bash setup.sh**
-**python plga_optimizer.py**
+
+```bash
+bash setup.sh   # Install dependencies
+./run.sh        # Start the optimizer
+```
+
+When the terminal displays a URL, open it in your browser.
 
 ---
 
@@ -59,7 +56,11 @@ Once the Codespace finishes setting up, open the terminal and run:
 Thank you for exploring the PLGA Drug Delivery Optimizer!  
 Whether you're a researcher, student, or someone simply curious about controlled‑release systems, this tool is built to help you experiment, learn, and discover.
 
-If you ever get stuck, have ideas for improvements, or want to contribute new models or datasets, feel free to reach out through my profile. Collaboration is always welcome.
+If you ever get stuck, have ideas for improvements, or want to contribute new models or datasets, feel free to reach out through my profile. 
+
+[![GitHub](https://img.shields.io/badge/GitHub-EGichuhi-181717?style=for-the-badge&logo=github)](https://github.com/EGichuhi)
+
+Collaboration is always welcome.
 
 Happy optimizing — and enjoy exploring the world of PLGA drug delivery! 😊
 
