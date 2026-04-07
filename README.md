@@ -45,6 +45,7 @@ Once the Codespace finishes setting up, open the terminal and run:
 ```bash
 bash setup.sh   # Install dependencies
 ./run.sh        # Start the optimizer
+```
 
 When the terminal displays a URL, open it in your browser.
 
@@ -55,7 +56,10 @@ When the terminal displays a URL, open it in your browser.
 Thank you for exploring the PLGA Drug Delivery Optimizer!  
 Whether you're a researcher, student, or someone simply curious about controlled‑release systems, this tool is built to help you experiment, learn, and discover.
 
-If you ever get stuck, have ideas for improvements, or want to contribute new models or datasets, feel free to reach out through my profile. Collaboration is always welcome.
+If you ever get stuck, have ideas for improvements, or want to contribute new models or datasets, feel free to reach out through my profile. 
+```https://github.com/EGichuhi```
+
+Collaboration is always welcome.
 
 Happy optimizing — and enjoy exploring the world of PLGA drug delivery! 😊
 
