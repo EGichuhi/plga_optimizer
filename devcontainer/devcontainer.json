@@ -17,7 +17,21 @@
       "settings": {
   "python.defaultInterpreterPath": "/workspaces/plga_optimizer/plga_venv/bin/python",  
   "terminal.integrated.defaultProfile.linux": "bash"
-}
+},
+  "postStartCommand": "bash run.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/plga_optimizer/plga_venv/bin/python",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // Add this line:
+        "terminal.integrated.env.linux": {
+          "VIRTUAL_ENV": "/workspaces/plga_optimizer/plga_venv",
+          "PATH": "/workspaces/plga_optimizer/plga_venv/bin:${env:PATH}"
+        }
+      }
+    }
+  }
     }
   },
   "forwardPorts": [8501],
@@ -28,3 +42,4 @@
     }
   }
 }
+

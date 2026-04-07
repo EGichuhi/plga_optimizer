@@ -18,4 +18,8 @@ pip install -r "$SCRIPT_DIR/requirements.txt"
 # Make scripts executable
 chmod +x run.sh
 
+# Run main.py once during setup
+echo "Running initial setup script..."
+python main.py
+
 echo "Setup complete! Run ./run.sh to start the optimizer."

@@ -1,8 +1,3 @@
 #!/bin/bash
-# run.sh - Automatically activates venv and runs the optimizer
-
-# Activate the virtual environment
 source plga_venv/bin/activate
-
-# Run the Python script
-python plga_optimizer.py
+streamlit run app.py --server.port 8501 --server.address 0.0.0.0
