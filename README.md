@@ -57,7 +57,8 @@ Thank you for exploring the PLGA Drug Delivery Optimizer!
 Whether you're a researcher, student, or someone simply curious about controlled‑release systems, this tool is built to help you experiment, learn, and discover.
 
 If you ever get stuck, have ideas for improvements, or want to contribute new models or datasets, feel free to reach out through my profile. 
-```https://github.com/EGichuhi```
+
+[![GitHub](https://img.shields.io/badge/GitHub-EGichuhi-181717?style=for-the-badge&logo=github)](https://github.com/EGichuhi)
 
 Collaboration is always welcome.
 
