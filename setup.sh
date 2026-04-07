@@ -10,6 +10,26 @@ if [ -n "$CODESPACES" ]; then
 else
   ENV_TYPE="local"
 fi
+echo ""
+#!/usr/bin/env bash
+set -e
+
+# Install Miniconda if not already installed
+if [ ! -d "/opt/conda" ]; then
+    echo "Installing Miniconda..."
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    bash miniconda.sh -b -p /opt/conda
+    rm miniconda.sh
+fi
+
+# Initialize conda for all users
+/opt/conda/bin/conda init bash
+
+# Create your environment if missing
+if ! /opt/conda/bin/conda env list | grep -q "plga_venv"; then
+    /opt/conda/bin/conda create -y -n plga_venv python=3.9
+fi
+
 
 echo ""
 echo "Environment detected: $ENV_TYPE"
