@@ -5,8 +5,9 @@ PLGA Drug Delivery Optimizer - Single File CLI (Front-end only)
 This script loads the models and preprocessing pipeline 
 trained by your train.py / model_pipeline.py / main.py.
 
-It does NOT train or rebuild anything — it only performs optimization 
-using the saved artifacts from training + test process.
+It provides a command-line interface to input a drug name and optimization preferences,
+then searches a defined formulation space to recommend optimal PLGA formulations
+based on the predictions of the trained models.
 """
 
 import sys

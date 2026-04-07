@@ -22,4 +22,5 @@ chmod +x run.sh
 echo "Running initial setup script..."
 python main.py
 
+print("=" * 60)
 echo "Setup complete! Run ./run.sh to start the optimizer."
