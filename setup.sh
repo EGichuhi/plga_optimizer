@@ -27,7 +27,8 @@ fi
 
 # Create your environment if missing
 if ! /opt/conda/bin/conda env list | grep -q "plga_venv"; then
-    /opt/conda/bin/conda create -y -n plga_venv python=3.9
+    /opt/conda/bin/conda install -y -n plga_venv -c conda-forge rdkit
+
 fi
 
 
