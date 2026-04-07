@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash
 
 echo "============================================================"
 echo " PLGA Drug Delivery Optimizer - Setup"
@@ -11,7 +11,7 @@ else
   ENV_TYPE="local"
 fi
 echo ""
-#!/usr/bin/env bash
+
 set -e
 
 # Install Miniconda if not already installed
