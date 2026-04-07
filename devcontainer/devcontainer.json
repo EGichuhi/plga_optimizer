@@ -6,7 +6,7 @@
     "ghcr.io/devcontainers/features/python:1": {}
   },
   "postCreateCommand": "bash setup.sh",
-  "postStartCommand": "echo ' Ready! Run ./run.sh to start optimizer'",
+  "postStartCommand": "bash run.sh",
   "customizations": {
     "vscode": {
       "extensions": [
