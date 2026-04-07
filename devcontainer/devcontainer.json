@@ -1,7 +1,7 @@
 // .devcontainer/devcontainer.json
 {
   "name": "PLGA Drug Delivery Optimizer",
-  "image": "mcr.microsoft.com/devcontainers/python:3.9",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {}
   },
