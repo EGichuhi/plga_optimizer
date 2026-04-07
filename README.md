@@ -49,6 +49,7 @@ You don’t need to do anything else.
 
 Once the Codespace finishes setting up, open the terminal and run:
 
+**bash setup.sh**
 **python plga_optimizer.py**
 
 ---
