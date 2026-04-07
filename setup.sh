@@ -22,14 +22,15 @@ if [ ! -d "/opt/conda" ]; then
     rm miniconda.sh
 fi
 
-# Initialize conda for all users
-/opt/conda/bin/conda init bash
-
 # Create your environment if missing
 if ! /opt/conda/bin/conda env list | grep -q "plga_venv"; then
-    /opt/conda/bin/conda install -y -n plga_venv -c conda-forge rdkit
-
+    echo "Creating conda environment plga_venv..."
+    /opt/conda/bin/conda create -y -n plga_venv python=3.9
 fi
+
+# Install RDKit
+echo "Installing RDKit..."
+/opt/conda/bin/conda install -y -n plga_venv -c conda-forge rdkit
 
 
 echo ""
