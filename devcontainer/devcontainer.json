@@ -15,9 +15,9 @@
         "GitHub.copilot"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
+  "python.defaultInterpreterPath": "/workspaces/plga_optimizer/plga_venv/bin/python",  
+  "terminal.integrated.defaultProfile.linux": "bash"
+}
     }
   },
   "forwardPorts": [8501],
